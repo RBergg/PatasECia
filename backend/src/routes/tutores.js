@@ -31,4 +31,24 @@ router.post('/', async (req, res) => {
     }
 });
 
+router.put('/:id', async (req, res) => {
+    const id = req.params.id;
+    const dados = req.body;
+    let resultado;
+    if (!dados.nome || !dados.telefone) {
+        return res.status(400).send('Dados obrigatórios ausentes');
+    }
+    try {
+        resultado = await pool.query('UPDATE tutores SET nome=$1,telefone=$2 WHERE id=$3 RETURNING id, nome, telefone',
+            [dados.nome, dados.telefone, id]);
+    } catch (erro) {
+        console.error(erro);
+        return res.status(500).send('Erro interno no servidor.');
+    }
+    if (resultado.rowCount === 0) {
+        return res.status(404).send('Tutor não encontrado.');
+    }
+    return res.status(200).send(resultado.rows[0]);
+});
+
 module.exports = router;
