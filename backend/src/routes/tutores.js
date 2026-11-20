@@ -51,4 +51,22 @@ router.put('/:id', async (req, res) => {
     return res.status(200).send(resultado.rows[0]);
 });
 
+router.delete('/:id', async (req, res) => {
+    const id = req.params.id;
+    let resultado
+    try {
+        resultado = await pool.query('DELETE FROM tutores WHERE id=$1', [id]);
+    } catch (erro) {
+        console.error(erro);
+        if (erro.code === '23503') {
+            return res.status(409).send('Não é possível excluir um tutor que possui animais vinculados.');
+        }
+        return res.status(500).send('Erro interno no servidor.');
+    }
+    if (resultado.rowCount === 0) {
+        return res.status(404).send('Tutor não encontrado.');
+    }
+    return res.status(204).send();
+});
+
 module.exports = router;
