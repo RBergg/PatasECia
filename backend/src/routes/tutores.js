@@ -3,17 +3,17 @@ const router = express.Router();
 const pool = require('../database/connection');
 
 router.get('/', async (req, res) => {
-    const resultado = await pool.query('SELECT id,nome,telefone FROM tutores');
+    const resultado = await pool.query('SELECT * FROM tutores');
     res.send(resultado.rows)
 });
 
 router.get('/:id', async (req, res) => {
     const id = req.params.id;
-    const resultado = await pool.query('SELECT id,nome,telefone FROM tutores WHERE id=$1', [id]);
+    const resultado = await pool.query('SELECT * FROM tutores WHERE id=$1', [id]);
     if (resultado.rows.length === 0) {
-        return res.status(404).send('Tutor não encontrado');
+        return res.status(404).send('Tutor não encontrado.');
     }
-    res.send(resultado.rows)
+    res.send(resultado.rows[0])
 });
 
 router.post('/', async (req, res) => {
@@ -22,8 +22,8 @@ router.post('/', async (req, res) => {
         return res.status(400).send('Dados obrigatórios ausentes');
     }
     try {
-        const resultado = await pool.query('INSERT INTO tutores (nome, telefone) VALUES($1, $2) RETURNING id, nome, telefone',
-            [dados.nome, dados.telefone]);
+        const resultado = await pool.query('INSERT INTO tutores (nome, telefone, email, endereco) VALUES($1, $2, $3, $4) RETURNING *',
+            [dados.nome, dados.telefone, dados.email, dados.endereco]);
         return res.status(201).send(resultado.rows[0]);
     } catch (erro) {
         console.error(erro);
@@ -39,8 +39,8 @@ router.put('/:id', async (req, res) => {
         return res.status(400).send('Dados obrigatórios ausentes');
     }
     try {
-        resultado = await pool.query('UPDATE tutores SET nome=$1,telefone=$2 WHERE id=$3 RETURNING id, nome, telefone',
-            [dados.nome, dados.telefone, id]);
+        resultado = await pool.query('UPDATE tutores SET nome=$1,telefone=$2, email=$3, endereco=$4 WHERE id=$5 RETURNING *',
+            [dados.nome, dados.telefone, dados.email, dados.endereco, id]);
     } catch (erro) {
         console.error(erro);
         return res.status(500).send('Erro interno no servidor.');
