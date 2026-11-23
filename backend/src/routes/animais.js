@@ -22,7 +22,7 @@ router.post('/', async (req, res) => {
 });
 
 router.get('/', async (req, res) => {
-    const resultado = await pool.query('SELECT * FROM animais');
+    const resultado = await pool.query('SELECT animais.*, tutores.nome AS tutor FROM animais INNER JOIN tutores ON animais.tutor_id = tutores.id;');
     res.send(resultado.rows)
 });
 

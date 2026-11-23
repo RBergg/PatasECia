@@ -7,8 +7,158 @@ body {
     padding: 0;
     display: flex;
     min-height: 100vh;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 aside {
     width: 75px;
+    height: 100vh;
+    background-color: #315C68;
+}
+
+nav {
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    gap: 35px;
+}
+
+nav img {
+    width: 40px;
+    height: 40px;
+}
+
+nav a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 55px;
+    height: 55px;
+    border-radius: 16px;
+}
+
+nav a:hover {
+    background-color: #477987;
+    transition: background-color 0.2s ease;
+}
+
+nav a.ativo {
+    background-color: #477987;
+}
+
+main {
+    flex: 1;
+    padding: 30px;
+}
+
+.secao-inicio {
+    margin-top: 35px;
+    background-color: #F0F5F5;
+    padding: 25px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 30px;
+    padding-right: 40px;
+}
+
+main section img {
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+}
+
+main section div {
+    flex: 1;
+}
+
+main h1 {
+    font-size: 28px;
+    color: #315C68;
+    margin: 0;
+}
+
+main h2 {
+    font-size: 24px;
+    color: #315C68;
+    margin-bottom: 12px;
+}
+
+main p {
+    max-width: 650px;
+    font-size: 16px;
+    color: #52636A;
+    line-height: 1.6;
+
+}
+
+table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 12px;
+    text-align: center;
+}
+
+th {
+    color: white;
+    padding: 16px 12px;
+    background-color: #315C68;
+}
+
+td {
+    color: #52636A;
+    padding: 14px 12px;
+    border-bottom: 1px solid #E2EAEA;
+}
+
+th:first-child {
+    border-top-left-radius: 12px;
+}
+
+th:last-child {
+    border-top-right-radius: 12px;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #F0F5F5;
+}
+
+.cabecalho-lista {
+    display: flex;
+    gap: 12px;
+    margin-top: 35px;
+}
+
+.cabecalho-lista section {
+    margin-top: 0;
+    display: block;
+    padding: 20px;
+}
+
+.h2-lista,
+.descricao {
+    background-color: #F0F5F5;
+    border-radius: 16px;
+}
+
+.descricao {
+    flex: 1;
+}
+
+.tabela {
+    display: block;
+    background-color: white;
+    border-radius: 16px;
+    padding: 20px;
+    margin-top: 12px;
 }

@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/style.css" />
+    <title>Animais | Patas & Cia.</title>
+  </head>
+  <body>
+    <aside>
+      <nav>
+        <a href="index.html">
+          <img src="assets/icones/home.svg" alt="home" />
+        </a>
+        <a href="animais.html" class="ativo">
+          <img src="assets/icones/paw.svg" alt="Ícone de pata" />
+        </a>
+        <a href="tutores.html">
+          <img
+            src="assets/icones/users-group.svg"
+            alt="Ícone grupo de pessoas"
+          />
+        </a>
+      </nav>
+    </aside>
+    <main>
+      <header>
+        <h1>Animais Cadastrados</h1>
+      </header>
+      <div class="cabecalho-lista">
+        <section class="h2-lista">
+          <div>
+            <h2>Lista de animais</h2>
+          </div>
+        </section>
+        <section class="descricao">
+          <div>
+            <p>Consulte e gerencie os animais cadastrados na clínica.</p>
+          </div>
+        </section>
+      </div>
+      <section class="tabela">
+        <table>
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Espécie</th>
+              <th>Raça</th>
+              <th>Data de nascimento</th>
+              <th>Tutor</th>
+            </tr>
+          </thead>
+          <tbody id="lista-animais"></tbody>
+        </table>
+      </section>
+    </main>
+    <script src="js/animais.js"></script>
+  </body>
+</html>
