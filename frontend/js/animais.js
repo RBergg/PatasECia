@@ -11,19 +11,19 @@ fetch('http://localhost:3000/api/animais')
             linha.appendChild(celulaNome);
 
             const celulaEspecie = document.createElement('td');
-            celulaEspecie.textContent = (animal.especie);
+            celulaEspecie.textContent = animal.especie;
             linha.appendChild(celulaEspecie);
 
             const celulaRaca = document.createElement('td');
-            celulaRaca.textContent = (animal.raca);
+            celulaRaca.textContent = animal.raca || ' - ';
             linha.appendChild(celulaRaca);
 
             const celulaDataNascmento = document.createElement('td');
-            celulaDataNascmento.textContent = (animal.data_nascimento);
+            celulaDataNascmento.textContent = animal.data_nascimento || ' - ';
             linha.appendChild(celulaDataNascmento);
 
             const tutor = document.createElement('td');
-            tutor.textContent = (animal.tutor);
+            tutor.textContent = animal.tutor;
             linha.appendChild(tutor);
             listaAnimais.appendChild(linha);
         });
