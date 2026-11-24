@@ -41,7 +41,54 @@
             <p>Consulte e gerencie os animais cadastrados na clínica.</p>
           </div>
         </section>
+        <section class="botao-cadastrar">
+          <button type="button" id="btn-novo-animal">Cadastrar pet</button>
+        </section>
       </div>
+      <!-- Fórmulario cadastro animal -->
+      <dialog id="modal-animal">
+        <h2>Cadastrar pet</h2>
+
+        <form id="form-animal">
+          <label for="nome-animal">Nome</label>
+          <input
+            type="text"
+            id="nome-animal"
+            placeholder="Digite o nome do animal"
+            required
+          />
+
+          <label for="especie-animal">Espécie</label>
+          <input
+            type="text"
+            id="especie-animal"
+            placeholder="Digite a espécie do animal"
+            required
+          />
+
+          <label for="raca-animal">Raça</label>
+          <input
+            type="text"
+            id="raca-animal"
+            placeholder="Digite a raca do animal"
+          />
+
+          <label for="dataNascimento-animal">Data de nascimento</label>
+          <input
+            type="date"
+            id="dataNascimento-animal"
+            placeholder="Digite o a data de nascimento do animal"
+          />
+
+          <label for="tutor-animal">Tutor</label>
+          <select id="tutor-animal" required>
+            <option value="" selected disabled>Selecione um tutor</option>
+          </select>
+
+          <button type="button" id="btn-cancelar-animal">Cancelar</button>
+          <button type="submit">Cadastrar</button>
+        </form>
+      </dialog>
       <!-- Tabela de animais -->
       <section class="tabela">
         <table>

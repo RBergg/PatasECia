@@ -11,7 +11,10 @@ router.post('/', async (req, res) => {
     try {
         const resultado = await pool.query('INSERT INTO animais (nome, especie, raca, data_nascimento, tutor_id) VALUES ($1,$2,$3,$4,$5) RETURNING id, nome, especie, raca, data_nascimento, tutor_id',
             [dados.nome, dados.especie, dados.raca, dados.data_nascimento, dados.tutor_id]);
-        return res.status(201).send(resultado.rows[0]);
+        const animalCompleto = await pool.query('SELECT animais.*, tutores.nome AS tutor FROM animais INNER JOIN tutores ON animais.tutor_id = tutores.id WHERE animais.id = $1',
+            [resultado.rows[0].id]);
+
+        return res.status(201).send(animalCompleto.rows[0]);
     } catch (erro) {
         console.error(erro);
         if (erro.code === '23503') {
@@ -55,9 +58,12 @@ router.put('/:id', async (req, res) => {
         return res.status(500).send('Erro interno no servidor.');
     }
     if (resultado.rowCount === 0) {
+
         return res.status(404).send('Animal não encontrado.');
     }
-    return res.status(200).send(resultado.rows[0]);
+    const animalCompleto = await pool.query('SELECT animais.*, tutores.nome AS tutor FROM animais INNER JOIN tutores ON animais.tutor_id = tutores.id WHERE animais.id = $1',
+        [id]);
+    return res.status(200).send(animalCompleto.rows[0]);
 });
 
 router.delete('/:id', async (req, res) => {
