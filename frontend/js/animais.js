@@ -18,9 +18,15 @@ fetch('http://localhost:3000/api/animais')
             celulaRaca.textContent = animal.raca || ' - ';
             linha.appendChild(celulaRaca);
 
-            const celulaDataNascmento = document.createElement('td');
-            celulaDataNascmento.textContent = animal.data_nascimento || ' - ';
-            linha.appendChild(celulaDataNascmento);
+            const celulaDataNascimento = document.createElement('td');
+            if (animal.data_nascimento) {
+                const data = animal.data_nascimento.slice(0, 10);
+                const partes = data.split('-');
+                celulaDataNascimento.textContent = partes[2] + '/' + partes[1] + '/' + partes[0]
+            } else {
+                celulaDataNascimento.textContent = ' - ';
+            }
+            linha.appendChild(celulaDataNascimento);
 
             const tutor = document.createElement('td');
             tutor.textContent = animal.tutor;

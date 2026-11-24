@@ -55,18 +55,6 @@ main {
     padding: 30px;
 }
 
-.secao-inicio {
-    margin-top: 35px;
-    background-color: #F0F5F5;
-    padding: 25px;
-    border-radius: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 30px;
-    padding-right: 40px;
-}
-
 main section img {
     width: 150px;
     height: 150px;
@@ -131,6 +119,18 @@ th:last-child {
 
 tbody tr:nth-child(even) {
     background-color: #F0F5F5;
+}
+
+.secao-inicio {
+    margin-top: 35px;
+    background-color: #F0F5F5;
+    padding: 25px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 30px;
+    padding-right: 40px;
 }
 
 .cabecalho-lista {
