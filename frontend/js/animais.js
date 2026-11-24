@@ -22,7 +22,7 @@ fetch('http://localhost:3000/api/animais')
             if (animal.data_nascimento) {
                 const data = animal.data_nascimento.slice(0, 10);
                 const partes = data.split('-');
-                celulaDataNascimento.textContent = partes[2] + '/' + partes[1] + '/' + partes[0]
+                celulaDataNascimento.textContent = partes[2] + '/' + partes[1] + '/' + partes[0];
             } else {
                 celulaDataNascimento.textContent = ' - ';
             }
