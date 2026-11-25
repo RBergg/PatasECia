@@ -132,7 +132,16 @@ function renderizarAnimais(lista) {
         celulaAcoes.appendChild(btnExcluir);
         btnExcluir.classList.add('btn-excluir');
         btnExcluir.addEventListener('click', () => {
+            const confirmarExclusao = confirm(
+                `Deseja mesmo excluir o animal ${animal.nome}?`
+            );
+
+            if (!confirmarExclusao) {
+                return;
+            }
+
             console.log(animal.id);
+
             fetch(`http://localhost:3000/api/animais/${animal.id}`, {
                 method: 'DELETE'
             })
@@ -142,7 +151,7 @@ function renderizarAnimais(lista) {
                             animalCadastrado => animalCadastrado.id === animal.id
                         );
                         animaisCadastrados.splice(indice, 1);
-                        renderizarAnimais(animaisCadastrados)
+                        renderizarAnimais(animaisCadastrados);
                     } else {
                         console.log('Não foi possível excluir o animal.');
                     }

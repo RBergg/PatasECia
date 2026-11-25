@@ -37,6 +37,7 @@ function abrirModalAnimais(tutor) {
                 tituloAnimal.textContent = animal.nome;
 
                 const btnEditar = document.createElement('button');
+                btnEditar.classList.add('btn-editar');
                 btnEditar.textContent = 'EDITAR';
 
                 btnEditar.addEventListener('click', () => {
