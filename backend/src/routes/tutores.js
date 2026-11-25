@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../database/connection');
 
+function telefoneValido(telefone) {
+    return /^\([0-9]{2}\) [0-9]{4,5}-[0-9]{4}$/.test(telefone);
+}
 router.get('/', async (req, res) => {
     const resultado = await pool.query('SELECT * FROM tutores');
     res.send(resultado.rows)
@@ -21,6 +24,9 @@ router.post('/', async (req, res) => {
     if (!dados.nome || !dados.telefone) {
         return res.status(400).send('Dados obrigatórios ausentes');
     }
+    if (!telefoneValido(dados.telefone)) {
+        return res.status(400).send('Formato de telefone inválido.');
+    }
     try {
         const resultado = await pool.query('INSERT INTO tutores (nome, telefone, email, endereco) VALUES($1, $2, $3, $4) RETURNING *',
             [dados.nome, dados.telefone, dados.email, dados.endereco]);
@@ -37,6 +43,9 @@ router.put('/:id', async (req, res) => {
     let resultado;
     if (!dados.nome || !dados.telefone) {
         return res.status(400).send('Dados obrigatórios ausentes');
+    }
+    if (!telefoneValido(dados.telefone)) {
+        return res.status(400).send('Formato de telefone inválido.');
     }
     try {
         resultado = await pool.query('UPDATE tutores SET nome=$1,telefone=$2, email=$3, endereco=$4 WHERE id=$5 RETURNING *',

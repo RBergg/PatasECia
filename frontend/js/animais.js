@@ -17,6 +17,7 @@ btnNovoAnimal.addEventListener('click', () => {
     formAnimal.reset();
     animalEmEdicao = null;
     btnSalvarAnimal.textContent = 'Cadastrar';
+    btnSalvarAnimal.classList.replace('btn-editar', 'btn-cadastrar');
     modalAnimal.showModal()
 });
 
@@ -47,8 +48,8 @@ formAnimal.addEventListener('submit', (event) => {
         tutor_id
     };
     const url = animalEmEdicao !== null
-        ? `http://localhost:3000/api/animais/${animalEmEdicao}`
-        : 'http://localhost:3000/api/animais';
+        ? `${API_URL}/animais/${animalEmEdicao}`
+        : `${API_URL}/animais`;
 
     const metodo = animalEmEdicao !== null
         ? 'PUT'
@@ -142,7 +143,7 @@ function renderizarAnimais(lista) {
 
             console.log(animal.id);
 
-            fetch(`http://localhost:3000/api/animais/${animal.id}`, {
+            fetch(`${API_URL}/animais/${animal.id}`, {
                 method: 'DELETE'
             })
                 .then(resposta => {
@@ -175,11 +176,12 @@ function editarAnimal(animal) {
     selectTutorAnimal.value = animal.tutor_id;
     animalEmEdicao = animal.id;
     btnSalvarAnimal.textContent = 'Salvar';
+    btnSalvarAnimal.classList.replace('btn-cadastrar', 'btn-editar');
     modalAnimal.showModal();
 }
 
 
-fetch('http://localhost:3000/api/tutores')
+fetch(`${API_URL}/tutores`)
     .then(resposta => resposta.json())
     .then(tutores => {
         tutores.forEach(tutor => {
@@ -192,7 +194,7 @@ fetch('http://localhost:3000/api/tutores')
             selectTutorAnimal.value = idTutorOrigem;
         }
 
-        return fetch('http://localhost:3000/api/animais');
+        return fetch(`${API_URL}/animais`);
     })
     .then(resposta => resposta.json())
     .then(animais => {

@@ -6,12 +6,28 @@ const modalTutor = document.getElementById('modal-tutor');
 const btnCancelarTutor = document.getElementById('btn-cancelar-tutor');
 const formTutor = document.getElementById('form-tutor');
 const btnSalvarTutor = formTutor.querySelector('button[type="submit"]');
+const campoTelefoneTutor = document.getElementById('telefone-tutor');
 let tutorEmEdicao = null;
 
+campoTelefoneTutor.addEventListener('input', () => {
+    let numeros = campoTelefoneTutor.value.replace(/\D/g, '').slice(0, 11);
+
+    if (numeros.length <= 2) {
+        campoTelefoneTutor.value = numeros ? `(${numeros}` : '';
+    } else if (numeros.length <= 6) {
+        campoTelefoneTutor.value = `(${numeros.slice(0, 2)}) ${numeros.slice(2)}`;
+    } else if (numeros.length <= 10) {
+        campoTelefoneTutor.value = `(${numeros.slice(0, 2)}) ${numeros.slice(2, 6)}-${numeros.slice(6)}`;
+    } else {
+        campoTelefoneTutor.value = `(${numeros.slice(0, 2)}) ${numeros.slice(2, 7)}-${numeros.slice(7)}`;
+    }
+});
 
 btnNovoTutor.addEventListener('click', () => {
+    formTutor.reset();
     tutorEmEdicao = null;
     btnSalvarTutor.textContent = 'Cadastrar';
+    btnSalvarTutor.classList.replace('btn-editar', 'btn-cadastrar');
     modalTutor.showModal()
 });
 
@@ -38,8 +54,8 @@ formTutor.addEventListener('submit', (event) => {
         endereco
     };
     const url = tutorEmEdicao !== null
-        ? `http://localhost:3000/api/tutores/${tutorEmEdicao}`
-        : 'http://localhost:3000/api/tutores';
+        ? `${API_URL}/tutores/${tutorEmEdicao}`
+        : `${API_URL}/tutores`;
 
     const metodo = tutorEmEdicao !== null
         ? 'PUT'
@@ -125,6 +141,7 @@ function renderizarTutores(lista) {
             console.log(tutor.id);
             tutorEmEdicao = tutor.id;
             btnSalvarTutor.textContent = 'Salvar';
+            btnSalvarTutor.classList.replace('btn-cadastrar', 'btn-editar');
             modalTutor.showModal();
         });
         linha.appendChild(celulaAcoes);
@@ -144,7 +161,7 @@ function renderizarTutores(lista) {
 
             console.log(tutor.id);
 
-            fetch(`http://localhost:3000/api/tutores/${tutor.id}`, {
+            fetch(`${API_URL}/tutores/${tutor.id}`, {
                 method: 'DELETE'
             })
                 .then(resposta => {
@@ -155,8 +172,10 @@ function renderizarTutores(lista) {
 
                         tutoresCadastrados.splice(indice, 1);
                         renderizarTutores(tutoresCadastrados);
+                    } else if (resposta.status === 409) {
+                        alert('Não foi possível excluir este tutor porque ele possui animais cadastrados.');
                     } else {
-                        console.log('Não foi possível excluir o tutor.');
+                        alert('Ocorreu um erro ao tentar excluir o tutor.');
                     }
                 });
         });;
@@ -174,7 +193,7 @@ function renderizarTutores(lista) {
     });
 }
 
-fetch('http://localhost:3000/api/tutores')
+fetch(`${API_URL}/tutores`)
     .then(resposta => resposta.json())
     .then(tutores => {
         console.log(tutores);
