@@ -6,17 +6,29 @@ function telefoneValido(telefone) {
     return /^\([0-9]{2}\) [0-9]{4,5}-[0-9]{4}$/.test(telefone);
 }
 router.get('/', async (req, res) => {
-    const resultado = await pool.query('SELECT * FROM tutores');
-    res.send(resultado.rows)
+    try {
+
+        const resultado = await pool.query('SELECT * FROM tutores');
+        res.send(resultado.rows)
+
+    } catch (erro) {
+        console.error(erro);
+        return res.status(500).send('Erro interno no servidor.')
+    }
 });
 
 router.get('/:id', async (req, res) => {
-    const id = req.params.id;
-    const resultado = await pool.query('SELECT * FROM tutores WHERE id=$1', [id]);
-    if (resultado.rows.length === 0) {
-        return res.status(404).send('Tutor não encontrado.');
+    try {
+        const id = req.params.id;
+        const resultado = await pool.query('SELECT * FROM tutores WHERE id=$1', [id]);
+        if (resultado.rows.length === 0) {
+            return res.status(404).send('Tutor não encontrado.');
+        }
+        res.send(resultado.rows[0])
+    } catch (erro) {
+        console.error(erro);
+        return res.status(500).send('Erro interno no servidor.')
     }
-    res.send(resultado.rows[0])
 });
 
 router.post('/', async (req, res) => {

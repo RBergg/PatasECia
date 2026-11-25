@@ -25,18 +25,28 @@ router.post('/', async (req, res) => {
 });
 
 router.get('/', async (req, res) => {
-    const resultado = await pool.query('SELECT animais.*, tutores.nome AS tutor FROM animais INNER JOIN tutores ON animais.tutor_id = tutores.id;');
-    res.send(resultado.rows)
+    try {
+        const resultado = await pool.query('SELECT animais.*, tutores.nome AS tutor FROM animais INNER JOIN tutores ON animais.tutor_id = tutores.id;');
+        res.send(resultado.rows)
+    } catch (erro) {
+        console.error(erro);
+        return res.status(500).send('Erro interno no servidor.')
+    }
 });
 
 router.get('/:id', async (req, res) => {
-    const id = req.params.id;
-    const resultado = await pool.query('SELECT id, nome, especie, raca, data_nascimento, tutor_id FROM animais WHERE id =$1',
-        [id])
-    if (resultado.rows.length === 0) {
-        return res.status(404).send('Animal não encontrado.')
+    try {
+        const id = req.params.id;
+        const resultado = await pool.query('SELECT id, nome, especie, raca, data_nascimento, tutor_id FROM animais WHERE id =$1',
+            [id])
+        if (resultado.rows.length === 0) {
+            return res.status(404).send('Animal não encontrado.')
+        }
+        res.send(resultado.rows[0])
+    } catch (erro) {
+        console.error(erro);
+        return res.status(500).send('Erro interno no servidor.')
     }
-    res.send(resultado.rows[0])
 });
 
 router.put('/:id', async (req, res) => {
@@ -46,10 +56,19 @@ router.put('/:id', async (req, res) => {
     if (!dados.nome || !dados.especie || !dados.tutor_id) {
         return res.status(400).send('Dados obrigatórios ausentes.');
     }
+
+    let animalCompleto
     try {
         resultado = await pool.query('UPDATE animais SET nome=$1, especie=$2, raca=$3, data_nascimento=$4,tutor_id=$5 WHERE id=$6 RETURNING id, nome, raca, data_nascimento, especie, tutor_id',
             [dados.nome, dados.especie, dados.raca, dados.data_nascimento, dados.tutor_id, id]
         );
+        if (resultado.rowCount === 0) {
+
+            return res.status(404).send('Animal não encontrado.');
+        }
+        animalCompleto = await pool.query('SELECT animais.*, tutores.nome AS tutor FROM animais INNER JOIN tutores ON animais.tutor_id = tutores.id WHERE animais.id = $1',
+            [id]);
+
     } catch (erro) {
         console.error(erro);
         if (erro.code === '23503') {
@@ -57,12 +76,7 @@ router.put('/:id', async (req, res) => {
         }
         return res.status(500).send('Erro interno no servidor.');
     }
-    if (resultado.rowCount === 0) {
 
-        return res.status(404).send('Animal não encontrado.');
-    }
-    const animalCompleto = await pool.query('SELECT animais.*, tutores.nome AS tutor FROM animais INNER JOIN tutores ON animais.tutor_id = tutores.id WHERE animais.id = $1',
-        [id]);
     return res.status(200).send(animalCompleto.rows[0]);
 });
 
