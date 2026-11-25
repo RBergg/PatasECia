@@ -1,9 +1,14 @@
 const listaAnimais = document.getElementById('lista-animais');
 const selectTutorAnimal = document.getElementById('tutor-animal');
 const btnNovoAnimal = document.getElementById('btn-novo-animal');
+btnNovoAnimal.classList.add('btn-cadastrar');
 const modalAnimal = document.getElementById('modal-animal');
 const btnCancelarAnimal = document.getElementById('btn-cancelar-animal');
 const formAnimal = document.getElementById('form-animal');
+const btnSalvarAnimal = formAnimal.querySelector('button[type="submit"]');
+const parametrosURL = new URLSearchParams(window.location.search);
+const idAnimalParaEditar = parametrosURL.get('editar');
+const idTutorOrigem = parametrosURL.get('tutor');
 const animaisCadastrados = [];
 let animalEmEdicao = null;
 console.log(listaAnimais);
@@ -11,6 +16,7 @@ console.log(listaAnimais);
 btnNovoAnimal.addEventListener('click', () => {
     formAnimal.reset();
     animalEmEdicao = null;
+    btnSalvarAnimal.textContent = 'Cadastrar';
     modalAnimal.showModal()
 });
 
@@ -113,27 +119,18 @@ function renderizarAnimais(lista) {
 
         const celulaAcoes = document.createElement('td');
         const btnEditar = document.createElement('button');
+        btnEditar.classList.add('btn-editar');
         btnEditar.textContent = 'EDITAR';
         celulaAcoes.appendChild(btnEditar);
         btnEditar.addEventListener('click', () => {
-            document.getElementById('nome-animal').value = animal.nome;
-            document.getElementById('especie-animal').value = animal.especie;
-            document.getElementById('raca-animal').value = animal.raca;
-            if (animal.data_nascimento === null) {
-                document.getElementById('dataNascimento-animal').value = '';
-            } else {
-                document.getElementById('dataNascimento-animal').value = animal.data_nascimento.slice(0, 10);
-            }
-            selectTutorAnimal.value = animal.tutor_id;
-            console.log(animal.id);
-            modalAnimal.showModal();
-            animalEmEdicao = animal.id;
+            editarAnimal(animal);
         });
         linha.appendChild(celulaAcoes);
 
         const btnExcluir = document.createElement('button');
         btnExcluir.textContent = 'EXCLUIR';
         celulaAcoes.appendChild(btnExcluir);
+        btnExcluir.classList.add('btn-excluir');
         btnExcluir.addEventListener('click', () => {
             console.log(animal.id);
             fetch(`http://localhost:3000/api/animais/${animal.id}`, {
@@ -156,24 +153,55 @@ function renderizarAnimais(lista) {
     });
 }
 
+function editarAnimal(animal) {
+    document.getElementById('nome-animal').value = animal.nome;
+    document.getElementById('especie-animal').value = animal.especie;
+    document.getElementById('raca-animal').value = animal.raca;
+
+    if (animal.data_nascimento === null) {
+        document.getElementById('dataNascimento-animal').value = '';
+    } else {
+        document.getElementById('dataNascimento-animal').value = animal.data_nascimento.slice(0, 10);
+    }
+    selectTutorAnimal.value = animal.tutor_id;
+    animalEmEdicao = animal.id;
+    btnSalvarAnimal.textContent = 'Salvar';
+    modalAnimal.showModal();
+}
+
 
 fetch('http://localhost:3000/api/tutores')
     .then(resposta => resposta.json())
     .then(tutores => {
-
-        console.log(tutores);
         tutores.forEach(tutor => {
             const opcao = document.createElement('option');
             opcao.value = tutor.id;
             opcao.textContent = tutor.nome;
             selectTutorAnimal.appendChild(opcao);
         });
-    });
+        if (idTutorOrigem) {
+            selectTutorAnimal.value = idTutorOrigem;
+        }
 
-fetch('http://localhost:3000/api/animais')
+        return fetch('http://localhost:3000/api/animais');
+    })
     .then(resposta => resposta.json())
     .then(animais => {
-        console.log(animais);
         animaisCadastrados.push(...animais);
         renderizarAnimais(animaisCadastrados);
+        if (idAnimalParaEditar) {
+            const animalEncontrado = animaisCadastrados.find(
+                animal => animal.id === Number(idAnimalParaEditar)
+            );
+
+            if (animalEncontrado) {
+                editarAnimal(animalEncontrado);
+            }
+        } else if (idTutorOrigem) {
+            formAnimal.reset();
+            animalEmEdicao = null;
+            selectTutorAnimal.value = idTutorOrigem;
+            btnSalvarAnimal.textContent = 'Cadastrar';
+            modalAnimal.showModal();
+        }
     });

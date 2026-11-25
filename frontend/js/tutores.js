@@ -1,14 +1,17 @@
 const listaTutores = document.getElementById('lista-tutores');
 const buscaTutores = document.getElementById('busca-tutores');
 const btnNovoTutor = document.getElementById('btn-novo-tutor');
+btnNovoTutor.classList.add('btn-cadastrar');
 const modalTutor = document.getElementById('modal-tutor');
 const btnCancelarTutor = document.getElementById('btn-cancelar-tutor');
 const formTutor = document.getElementById('form-tutor');
+const btnSalvarTutor = formTutor.querySelector('button[type="submit"]');
 let tutorEmEdicao = null;
 
 
 btnNovoTutor.addEventListener('click', () => {
     tutorEmEdicao = null;
+    btnSalvarTutor.textContent = 'Cadastrar';
     modalTutor.showModal()
 });
 
@@ -112,6 +115,7 @@ function renderizarTutores(lista) {
         const celulaAcoes = document.createElement('td');
         const btnEditar = document.createElement('button');
         btnEditar.textContent = 'EDITAR';
+        btnEditar.classList.add('btn-editar');
         celulaAcoes.appendChild(btnEditar);
         btnEditar.addEventListener('click', () => {
             document.getElementById('nome-tutor').value = tutor.nome;
@@ -119,16 +123,27 @@ function renderizarTutores(lista) {
             document.getElementById('email-tutor').value = tutor.email;
             document.getElementById('endereco-tutor').value = tutor.endereco;
             console.log(tutor.id);
-            modalTutor.showModal();
             tutorEmEdicao = tutor.id;
+            btnSalvarTutor.textContent = 'Salvar';
+            modalTutor.showModal();
         });
         linha.appendChild(celulaAcoes);
 
         const btnExcluir = document.createElement('button');
         btnExcluir.textContent = 'EXCLUIR';
+        btnExcluir.classList.add('btn-excluir');
         celulaAcoes.appendChild(btnExcluir);
         btnExcluir.addEventListener('click', () => {
+            const confirmarExclusao = confirm(
+                `Deseja mesmo excluir o tutor ${tutor.nome}?`
+            );
+
+            if (!confirmarExclusao) {
+                return;
+            }
+
             console.log(tutor.id);
+
             fetch(`http://localhost:3000/api/tutores/${tutor.id}`, {
                 method: 'DELETE'
             })
@@ -137,13 +152,22 @@ function renderizarTutores(lista) {
                         const indice = tutoresCadastrados.findIndex(
                             tutorCadastrado => tutorCadastrado.id === tutor.id
                         );
+
                         tutoresCadastrados.splice(indice, 1);
-                        renderizarTutores(tutoresCadastrados)
+                        renderizarTutores(tutoresCadastrados);
                     } else {
                         console.log('Não foi possível excluir o tutor.');
                     }
                 });
-        });
+        });;
+
+        const btnVerAnimais = document.createElement('button');
+        btnVerAnimais.textContent = 'VER ANIMAIS';
+        btnVerAnimais.classList.add('btn-ver-animais');
+        celulaAcoes.appendChild(btnVerAnimais);
+        btnVerAnimais.addEventListener('click', () => {
+            window.abrirModalAnimais(tutor);
+        })
 
         listaTutores.appendChild(linha);
 

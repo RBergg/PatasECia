@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/modais.css" />
     <title>Tutores | Patas & Cia.</title>
   </head>
   <body>
@@ -78,9 +79,22 @@
             placeholder="Digite o endereço"
           />
 
-          <button type="button" id="btn-cancelar-tutor">Cancelar</button>
+          <button type="button" id="btn-cancelar-tutor" class="btn-secundario">
+            Cancelar
+          </button>
           <button type="submit">Cadastrar</button>
         </form>
+      </dialog>
+
+      <!-- Janela visualização de animais -->
+      <dialog id="modal-animais">
+        <h2>Animais do tutor</h2>
+        <p>Tutor: <span id="nome-tutor-selecionado"></span></p>
+        <section id="lista-animais-tutor"></section>
+        <button type="button" id="btn-cadastrar-animal-modal">
+          Cadastrar animal
+        </button>
+        <button type="button" id="btn-fechar-modal-animais">Fechar</button>
       </dialog>
 
       <!-- Campo de busca -->
@@ -112,5 +126,6 @@
 
     <!-- Scripts da página -->
     <script src="js/tutores.js"></script>
+    <script src="js/modal-animais.js"></script>
   </body>
 </html>
