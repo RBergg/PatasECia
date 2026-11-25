@@ -13,10 +13,14 @@ body {
 
 /* Menu lateral */
 aside {
+    position: sticky;
+    top: 0;
+    flex-shrink: 0;
     width: 75px;
     height: 100vh;
     background-color: #315C68;
 }
+
 
 nav {
     display: flex;
