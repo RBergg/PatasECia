@@ -8,6 +8,7 @@ const formAnimal = document.getElementById('form-animal');
 const btnSalvarAnimal = formAnimal.querySelector('button[type="submit"]');
 const parametrosURL = new URLSearchParams(window.location.search);
 const idAnimalParaEditar = parametrosURL.get('editar');
+const tituloModalAnimal = document.getElementById('titulo-modal-animal');
 const idTutorOrigem = parametrosURL.get('tutor');
 const animaisCadastrados = [];
 let animalEmEdicao = null;
@@ -16,6 +17,7 @@ console.log(listaAnimais);
 btnNovoAnimal.addEventListener('click', () => {
     formAnimal.reset();
     animalEmEdicao = null;
+    tituloModalAnimal.textContent = 'Cadastrar pet';
     btnSalvarAnimal.textContent = 'Cadastrar';
     btnSalvarAnimal.classList.replace('btn-editar', 'btn-cadastrar');
     modalAnimal.showModal()
@@ -175,6 +177,7 @@ function editarAnimal(animal) {
     }
     selectTutorAnimal.value = animal.tutor_id;
     animalEmEdicao = animal.id;
+    tituloModalAnimal.textContent = 'Editar pet';
     btnSalvarAnimal.textContent = 'Salvar';
     btnSalvarAnimal.classList.replace('btn-cadastrar', 'btn-editar');
     modalAnimal.showModal();
@@ -211,6 +214,7 @@ fetch(`${API_URL}/tutores`)
         } else if (idTutorOrigem) {
             formAnimal.reset();
             animalEmEdicao = null;
+            tituloModalAnimal.textContent = 'Cadastrar pet';
             selectTutorAnimal.value = idTutorOrigem;
             btnSalvarAnimal.textContent = 'Cadastrar';
             modalAnimal.showModal();

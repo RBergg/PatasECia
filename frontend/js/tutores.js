@@ -7,6 +7,7 @@ const btnCancelarTutor = document.getElementById('btn-cancelar-tutor');
 const formTutor = document.getElementById('form-tutor');
 const btnSalvarTutor = formTutor.querySelector('button[type="submit"]');
 const campoTelefoneTutor = document.getElementById('telefone-tutor');
+const tituloModalTutor = document.getElementById('titulo-modal-tutor');
 let tutorEmEdicao = null;
 
 campoTelefoneTutor.addEventListener('input', () => {
@@ -26,6 +27,7 @@ campoTelefoneTutor.addEventListener('input', () => {
 btnNovoTutor.addEventListener('click', () => {
     formTutor.reset();
     tutorEmEdicao = null;
+    tituloModalTutor.textContent = 'Cadastrar tutor';
     btnSalvarTutor.textContent = 'Cadastrar';
     btnSalvarTutor.classList.replace('btn-editar', 'btn-cadastrar');
     modalTutor.showModal()
@@ -140,6 +142,7 @@ function renderizarTutores(lista) {
             document.getElementById('endereco-tutor').value = tutor.endereco;
             console.log(tutor.id);
             tutorEmEdicao = tutor.id;
+            tituloModalTutor.textContent = 'Editar tutor';
             btnSalvarTutor.textContent = 'Salvar';
             btnSalvarTutor.classList.replace('btn-cadastrar', 'btn-editar');
             modalTutor.showModal();
