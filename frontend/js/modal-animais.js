@@ -18,7 +18,7 @@ function abrirModalAnimais(tutor) {
     janelaModal.showModal();
 
 
-    fetch('http://localhost:3000/api/animais')
+    fetch(`${API_URL}/animais`)
         .then(resposta => resposta.json())
         .then(animais => {
             const animaisDoTutor = animais.filter(
