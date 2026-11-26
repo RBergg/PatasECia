@@ -79,7 +79,7 @@ router.delete('/:id', async (req, res) => {
         resultado = await pool.query('DELETE FROM tutores WHERE id=$1', [id]);
     } catch (erro) {
         console.error(erro);
-        if (erro.code === '23503') {
+        if (erro.code === '23503' || erro.code === '23001') {
             return res.status(409).send('Não é possível excluir um tutor que possui animais vinculados.');
         }
         return res.status(500).send('Erro interno no servidor.');
