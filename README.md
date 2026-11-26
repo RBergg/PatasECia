@@ -15,4 +15,4 @@ Desenvolver uma aplicação web que permita cadastrar, consultar, atualizar e ex
 
 ## Status
 
-Em desenvolvimento.
+Concluido.
